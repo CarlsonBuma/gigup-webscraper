@@ -1,0 +1,28 @@
+{
+    "name": "Inspector Extension",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "storage", 
+        "activeTab", 
+        "scripting", 
+        "sidePanel",
+        "https://api.example.com/*"
+    ],
+    "action": {
+        "default_title": "Inspector"
+    },
+    "side_panel": {
+        "default_path": "app.html"
+    },
+    "background": {
+        "service_worker": "js/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["js/inspector.js"]
+        }
+    ]
+}
+

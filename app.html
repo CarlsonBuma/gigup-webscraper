@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Record HTML</title>
+    <style>
+        body { font-family: sans-serif; margin: 10px; }
+        button { margin-bottom: 10px; }
+        textarea { width: 420px; height: 50vh; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <!-- Web-Scraper -->
+    <button type="button" id="record">Record HTML</button>
+    <button type="button" id="element-inspector">Element Inspector</button>
+    <textarea id="output" placeholder="Captured HTML will appear here..."></textarea>
+    
+    <!-- User Secret -->
+    <hr>
+    <label for="secret"><b>API Secret:</b></label>
+    <input type="password" id="secret" placeholder="Enter your secret" />
+    <button type="button" id="save-secret">Save Secret</button>
+    <button type="button" id="show-secret">Show Secret</button>
+    <button type="button" id="hide-secret">Hide Secret</button>
+    <button type="button" id="delete-secret">Delete Secret</button>
+
+    <hr>
+    <div>Message: <span id="secret-message">Please enter secret.</span></div>
+
+    <!-- App -->
+    <script type="module" src="js/app/web-scraper.js"></script>
+    <script type="module" src="js/app/user-secret.js"></script>
+</body>
+</html>
+
