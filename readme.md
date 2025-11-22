@@ -47,8 +47,6 @@ Download `repository` and store it within your prefered path:
    - The extension icon should appear in your Chrome toolbar
    - Click it to verify the popup loads correctly
 
-**Note:** After switchting browser tab, may refresh page to reactivate.
-
 ---
 
 
@@ -66,8 +64,10 @@ Download `repository` and store it within your prefered path:
 `repository`/
 ├── manifest.json          # Chrome extension manifest (v3)
 ├── readme.md              # Documentation
-├── package.json           # Project dependencies (axios, dotenv)
+├── package.json           # Project metadata (still useful for dev/build)
 ├── app.html               # Main UI interface
+├── lib/                   # Vendored third‑party libraries
+│   └── axios.min.js       # Axios UMD build (bundled for browser use)
 └── js/                    # Active source files
     ├── app.js             # Main popup logic and UI event handlers
     ├── background.js      # Service worker for extension lifecycle
@@ -75,6 +75,28 @@ Download `repository` and store it within your prefered path:
     └── modules/
         ├── env.js         # API configuration and axios client setup
         └── request.js     # API request and secret management utilities
+
+```
+
+---
+
+### 🔌 API Data Flow (Developer Notes)
+
+The extension communicates with the backend API using `axios` via the helper function `sendApiRequest(inspectorData)`.
+
+#### Request Overview
+- **Endpoint**: `API_ENDPOINT` (configured in `env.js`)
+- **Method**: `POST`
+- **Headers**:
+  - `Authorization: <secret>` — retrieved from `chrome.storage.local` via `getAppSecret()`
+  - `Content-Type: application/json` (set automatically by axios)
+
+#### Request Body
+```json
+{
+  "base_url": "<string>",        // The URL of the inspected page
+  "scraper_data": "<string>"     // Serialized HTML fragment selected by the inspector
+}
 ```
 
 ---
