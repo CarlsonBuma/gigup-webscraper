@@ -1,123 +1,88 @@
-# Inspector Extension
+# Gigup Web Scraper
 
-A Chrome browser extension for capturing and inspecting HTML elements on web pages.
-
-## Overview
-
-Inspector Extension provides an intuitive interface to extract HTML content from any webpage. It offers two primary modes:
-1. **Record HTML** - Captures the entire body HTML of the current page
-2. **Element Inspector** - Interactively inspect individual elements by hovering and clicking
-
-## Features
-
-- 📋 **Full Page HTML Capture** - Export the complete HTML structure of a webpage's body
-- 🔍 **Interactive Element Inspector** - Hover over elements to preview their HTML, click to capture
-- 🎯 **Visual Highlighting** - Elements highlight with a red outline during inspection mode
-- 📌 **Side Panel Interface** - Access the extension directly from the browser's side panel
-- ✨ **Real-time Preview** - See element HTML as you hover over them
-
-## Project Structure
-
-```
-app-events-webscraper/
-├── manifest.json          # Chrome extension manifest (v3)
-├── readme.md              # This file
-├── app.html               # Alternative HTML interface
-└── js/
-    ├── app.js             # Main popup logic and event handlers
-    ├── background.js      # Service worker for extension lifecycle
-    └── inspector.js       # Content script for element inspection
-```
-
-## File Descriptions
-
-### `manifest.json`
-Defines the extension configuration:
-- **Manifest Version**: 3 (latest Chrome extension format)
-- **Permissions**: activeTab, scripting, sidePanel
-- **Features**: Side panel integration, content scripts, service worker
-
-### `app.html` / `popup.html`
-User interface with:
-- **Record HTML Button** - Captures full page body HTML
-- **Element Inspector Button** - Toggles element inspection mode
-- **Output Textarea** - Displays captured HTML content (420px × 70vh)
-
-### `js/app.js`
-Main application logic:
-- Handles "Record HTML" button click to capture page body
-- Toggles element inspector mode on/off
-- Displays live HTML preview as user hovers over elements
-- Communicates with content script via Chrome messaging API
-
-### `js/background.js`
-Service worker for extension lifecycle:
-- Opens the side panel when the extension icon is clicked
-
-### `js/inspector.js`
-Content script injected into web pages:
-- Highlights elements with red outline on hover
-- Captures element HTML when clicked
-- Sends HTML to popup via Chrome messaging
-- Handles inspector mode activation/deactivation
-
-## How to Use
-
-1. **Install the Extension**
-   - Load the extension in Chrome via `chrome://extensions/`
-   - Enable "Developer mode"
-   - Click "Load unpacked" and select this folder
-
-2. **Record Full Page HTML**
-   - Click the extension icon in the toolbar
-   - Click the "Record HTML" button
-   - The complete body HTML will appear in the textarea
-
-3. **Inspect Individual Elements**
-   - Click the extension icon in the toolbar
-   - Click the "Element Inspector" button
-   - Hover over any element on the webpage to see its HTML
-   - Click an element to capture it and stop inspector mode
-
-## Technical Details
-
-### Communication Flow
-
-```
-User clicks button in app.html
-    ↓
-app.js sends message to content script
-    ↓
-inspector.js captures element HTML
-    ↓
-Sends message back to app.js
-    ↓
-HTML displays in textarea
-```
-
-### Chrome APIs Used
-
-- `chrome.tabs.query()` - Get active tab
-- `chrome.scripting.executeScript()` - Run scripts in page context
-- `chrome.runtime.onMessage` - Receive messages from content scripts
-- `chrome.runtime.sendMessage()` - Send messages to popup
-- `chrome.sidePanel.open()` - Open extension side panel
+A Chrome browser extension for capturing and sending HTML elements from web pages to a backend API via authenticated requests.
 
 ## Browser Compatibility
 
 - Chrome 90+ (Manifest V3 requirement)
 - Chromium-based browsers (Edge, Brave, etc.)
 
-## Version
+## Key Features
 
-Current version: 1.0
+- **Text Selection Inspector** - Select text or HTML elements on any webpage
+- **API Integration** - Send captured HTML to a backend API endpoint with automatic serialization
+- **Secure Authentication** - Store and manage API secrets locally in browser storage
+- **Side Panel Interface** - Convenient side panel UI for all extension features
+- **Smart HTML Filtering** - Automatically removes scripts, styles, forms, and other non-content elements
+- **Real-time Output** - View captured HTML before sending to API
+
+---
+
+## 👤 For End Users
+
+App Events Web Scraper is a Chrome extension designed to extract HTML content from web pages and submit it to a backend API for processing. Users can select specific text or HTML sections on any webpage, and the extension will send the serialized data to the configured API endpoint with secure authentication.
+
+### Usage
+
+1. Highlight content on a webpage  
+2. See the captured HTML in the side panel  
+3. Click **Send Element** to submit it to the API  
+4. Manage your secret with **Save / Show / Hide / Delete** buttons
+
+### Install
+
+Download `repository` and store it within your prefered path:
+
+1. **Enable Developer Mode**
+   - Open Chrome and navigate to `chrome://extensions/`
+   - Toggle the "Developer mode" switch in the top right corner
+
+2. **Load the Extension**
+   - Click "Load unpacked" button
+   - Navigate to and select the `repository` folder
+   - The extension will be installed and ready to use
+
+3. **Verify Installation**
+   - The extension icon should appear in your Chrome toolbar
+   - Click it to verify the popup loads correctly
+
+---
+
+## 💻 For Developers
+
+### Tech Stack
+- **Manifest V3** (Chrome extension format)  
+- **Languages**: HTML, CSS, JavaScript (ES6+)  
+- **HTTP Client**: Axios  
+- **Chrome APIs**: Runtime, Tabs, Storage, Side Panel 
+
+### Folder Structure
+
+```
+webscraper/
+├── manifest.json          # Chrome extension manifest (v3)
+├── readme.md              # Documentation
+├── package.json           # Project dependencies (axios, dotenv)
+├── app.html               # Main UI interface
+└── js/                    # Active source files
+    ├── app.js             # Main popup logic and UI event handlers
+    ├── background.js      # Service worker for extension lifecycle
+    ├── inspector.js       # Content script for HTML capture and serialization
+    └── modules/
+        ├── env.js         # API configuration and axios client setup
+        └── request.js     # API request and secret management utilities
+```
+
+---
+
+## Legal & Compliance
+
+- **Compliance**: Users are responsible for ensuring that any scraping activity complies with applicable laws, regulations, and the terms of service of the websites they interact with.
+- **Data Protection**: Captured content may include personal or sensitive information. Users must handle such data responsibly and in accordance with local data protection rules (e.g., GDPR).
+- **API Secrets**: Secrets stored in the browser are under the sole control of the user. Do not share or expose them publicly.  
+- **No Warranty**: The software is provided “as‑is” without guarantees of accuracy, reliability, or suitability for production environments. 
+- **Liability**: The authors and contributors are not liable for misuse of the extension, including violations of site policies or data protection laws.
 
 ## License
 
-Internal use extension
-
-## Notes
-
-- The inspector mode prevents default click behavior to avoid navigation
-- Elements remain highlighted until inspection is stopped
-- HTML output is displayed as plain text for easy copying
+see licence.md

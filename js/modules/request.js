@@ -1,11 +1,11 @@
 "use strict"
-import { EXTENSION_STORAGE_LOCAL_KEY_NAME, apiClient } from "./env.js"
+import { EXTENSION_STORAGE_LOCAL_KEY_NAME, API_ENDPOINT, apiClient } from "./env.js"
 
 // Send Request
 export const sendApiRequest = async (inspectorData) => {
 
     // Validate
-    const storageSecret = getAppSecret();
+    const storageSecret = await getAppSecret();
     if(!storageSecret) return "No secret stored."
     if(!inspectorData?.data) return "Please select section."
 
@@ -14,7 +14,7 @@ export const sendApiRequest = async (inspectorData) => {
         apiClient.defaults.headers.common["Authorization"] = `${storageSecret}`;
 
         // Request
-        const response = await apiClient.post("/app-scraper-create-event", inspectorData);
+        const response = await apiClient.post(API_ENDPOINT, inspectorData);
         console.log("API response:", response.data);
         return response.data.message;
     } catch (err) {
@@ -23,6 +23,7 @@ export const sendApiRequest = async (inspectorData) => {
     }
 }
 
+// App Secret Management
 export const getAppSecret = async () => {
     const result = await chrome.storage.local.get([EXTENSION_STORAGE_LOCAL_KEY_NAME]);
     return result[EXTENSION_STORAGE_LOCAL_KEY_NAME] ?? null;
