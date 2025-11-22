@@ -14,7 +14,10 @@ export const sendApiRequest = async (inspectorData) => {
         apiClient.defaults.headers.common["Authorization"] = `${storageSecret}`;
 
         // Request
-        const response = await apiClient.post(API_ENDPOINT, inspectorData);
+        const response = await apiClient.post(API_ENDPOINT, {
+            'base_url': inspectorData?.url,
+            'scraper_data': inspectorData.data
+        });
         console.log("API response:", response.data);
         return response.data.message;
     } catch (err) {
