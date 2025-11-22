@@ -1,66 +1,71 @@
 "use strict";
 
-let inspectorActive = false;
-let lastHighlight = null;
+// On Website "Mouse-Selection"
+document.addEventListener("mouseup", () => {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
 
-// Listen for toggle messages from popup
-chrome.runtime.onMessage.addListener((msg) => {
-    inspectorActive = msg.inspectorActive;
-    if (!inspectorActive && lastHighlight) {
-        lastHighlight.style.outline = "";
-        lastHighlight = null;
+    // get the common ancestor of the selection
+    const range = sel.getRangeAt(0);
+
+    // clone only the selected fragment
+    const fragment = range.cloneContents();
+
+    // wrap in a temporary container to get HTML
+    const el = document.createElement("div");
+    el.appendChild(fragment);
+
+    // Emit to App - see background.js
+    const serializedElement = serializeElement(el)
+    chrome.runtime.sendMessage({ 
+        url: window.location.href,
+        data: serializedElement,
+    });
+});
+
+function serializeElement(el) {
+    if (!el) return "";
+
+    // tags to skip completely
+    const skipTags = [
+        "script", "style", 
+        "noscript", "iframe", "link", "meta",
+        "nav", "footer", "header", "form"
+    ];
+    
+    // Skip Tags
+    if (skipTags.includes(el.tagName.toLowerCase())) {
+        return "";
     }
-});
 
-// Utility: parse element into structured data
-function parseElement(el) {
-    const clone = el.cloneNode(true);
-    clone.querySelectorAll("script, style").forEach(node => node.remove());
+    // whitelist of attributes to keep
+    const keepAttrs = [
+        "id", "title", 
+        "href", 
+        "src", "alt", "width", "height" 
+    ];
 
-    const text = clone.innerText || "";
+    const attrs = [];
+    for (const name of keepAttrs) {
+        if (el.hasAttribute && el.hasAttribute(name)) {
+        attrs.push(`${name}="${el.getAttribute(name)}"`);
+        }
+    }
 
-    const links = Array.from(clone.querySelectorAll("a"))
-        .map(a => a.href)
-        .filter(Boolean);
+    const tag = el.tagName.toLowerCase();
+    const selfClosing = ["img", "br", "hr", "input"].includes(tag);
 
-    const headings = Array.from(clone.querySelectorAll("h1,h2,h3,h4,h5,h6"))
-        .map(h => h.innerText);
+    const openTag = `<${tag}${attrs.length ? " " + attrs.join(" ") : ""}${selfClosing ? " />" : ">"}`;
+    if (selfClosing) return openTag;
 
-    const images = Array.from(clone.querySelectorAll("img"))
-        .map(img => img.src);
+    const children = Array.from(el.childNodes).map(node => {
+        if (node.nodeType === 3) {
+        return node.textContent.replace(/\s+/g, " ").trim(); // normalize whitespace
+        } else if (node.nodeType === 1) {
+        return serializeElement(node);
+        }
+        return "";
+    }).join("");
 
-    return {
-        text: text.substring(0, 1999), // enforce limit
-        links,
-        headings,
-        images
-    };
+    return openTag + children + `</${tag}>`;
 }
-
-// Highlight on hover
-document.addEventListener("mouseover", (e) => {
-    if (!inspectorActive) return;
-
-    if (lastHighlight) lastHighlight.style.outline = "";
-    e.target.style.outline = "2px solid red";
-    lastHighlight = e.target;
-
-    // Send structured preview
-    chrome.runtime.sendMessage({ parsed: parseElement(e.target) });
-});
-
-// Capture on click and stop inspector
-document.addEventListener("click", (e) => {
-    if (!inspectorActive) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    chrome.runtime.sendMessage({ parsed: parseElement(e.target) });
-
-    if (lastHighlight) lastHighlight.style.outline = "";
-    lastHighlight = null;
-
-    inspectorActive = false;
-    chrome.runtime.sendMessage({ inspectorStopped: true });
-}, true);

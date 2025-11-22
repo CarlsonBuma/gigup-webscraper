@@ -13,8 +13,9 @@
 <body>
 
     <!-- Web-Scraper -->
-    <button type="button" id="record">Record HTML</button>
     <button type="button" id="element-inspector">Element Inspector</button>
+    <button type="button" id="button-request">Send Element</button>
+    <button type="button" id="button-delete-output">X</button>
     <textarea id="output" placeholder="Captured HTML will appear here..."></textarea>
     
     <!-- User Secret -->
@@ -27,11 +28,11 @@
     <button type="button" id="delete-secret">Delete Secret</button>
 
     <hr>
-    <div>Message: <span id="secret-message">Please enter secret.</span></div>
+    <div>Inspector: <span id="secret-message">Please enter secret.</span></div>
 
     <!-- App -->
-    <script type="module" src="js/app/web-scraper.js"></script>
-    <script type="module" src="js/app/user-secret.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script src="node_modules/axios/dist/axios.min.js"></script>
 </body>
 </html>
 
