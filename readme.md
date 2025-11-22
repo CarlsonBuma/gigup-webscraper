@@ -18,6 +18,7 @@ A Chrome browser extension for capturing and sending HTML elements from web page
 
 ---
 
+
 ## 👤 For End Users
 
 App Events Web Scraper is a Chrome extension designed to extract HTML content from web pages and submit it to a backend API for processing. Users can select specific text or HTML sections on any webpage, and the extension will send the serialized data to the configured API endpoint with secure authentication.
@@ -46,7 +47,10 @@ Download `repository` and store it within your prefered path:
    - The extension icon should appear in your Chrome toolbar
    - Click it to verify the popup loads correctly
 
+**Note:** After switchting browser tab, may refresh page to reactivate.
+
 ---
+
 
 ## 💻 For Developers
 
@@ -59,7 +63,7 @@ Download `repository` and store it within your prefered path:
 ### Folder Structure
 
 ```
-webscraper/
+`repository`/
 ├── manifest.json          # Chrome extension manifest (v3)
 ├── readme.md              # Documentation
 ├── package.json           # Project dependencies (axios, dotenv)
@@ -79,7 +83,7 @@ webscraper/
 
 - **Compliance**: Users are responsible for ensuring that any scraping activity complies with applicable laws, regulations, and the terms of service of the websites they interact with.
 - **Data Protection**: Captured content may include personal or sensitive information. Users must handle such data responsibly and in accordance with local data protection rules (e.g., GDPR).
-- **API Secrets**: Secrets stored in the browser are under the sole control of the user. Do not share or expose them publicly.  
+- **API Secrets**: Secrets stored in the browser are under the sole control of the user and their service provider. We recommend managing secret lifetimes according to established security best practices and industry standards. Never share or expose these secrets publicly.  
 - **No Warranty**: The software is provided “as‑is” without guarantees of accuracy, reliability, or suitability for production environments. 
 - **Liability**: The authors and contributors are not liable for misuse of the extension, including violations of site policies or data protection laws.
 

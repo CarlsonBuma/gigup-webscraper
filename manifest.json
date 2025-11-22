@@ -1,13 +1,12 @@
 {
     "name": "Inspector Extension",
-    "version": "1.0",
+    "version": "0.3",
     "manifest_version": 3,
     "permissions": [
         "storage", 
         "activeTab", 
         "scripting", 
-        "sidePanel",
-        "https://api.example.com/*"
+        "sidePanel"
     ],
     "action": {
         "default_title": "Inspector"

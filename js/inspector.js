@@ -18,6 +18,7 @@ document.addEventListener("mouseup", () => {
     // Emit to App - see background.js
     const serializedElement = serializeElement(el)
     chrome.runtime.sendMessage({ 
+        type: "inspector",
         url: window.location.href,
         data: serializedElement,
     });

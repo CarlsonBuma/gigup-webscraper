@@ -5,7 +5,7 @@ import { sendApiRequest, getAppSecret, saveAppSecret, deleteAppSecret } from "./
 const btnStartInspector = document.getElementById("element-inspector");
 const inspectorOutput = document.getElementById("output");
 const btnRequest = document.getElementById("button-request");
-const btnDeleteOutput = document.getElementById("button-delete-output");
+const btnRemoveOutput = document.getElementById("button-delete-output");
 
 // App Secret
 const secretInput = document.getElementById("secret");
@@ -22,8 +22,34 @@ let inspectorData = {
     data: ''
 };
 
-// Init Inspector
+// Chrome runtime Emits
+chrome.runtime.onMessage.addListener((msg) => {
+
+    // Init App
+    // console.log('watcher', msg)
+    if(msg?.type === "init") {
+        appInit()
+    }
+
+    // Listen to inspector emits 
+    else if(msg?.type === "inspector") {
+        if(!inspectorActive) return;
+        inspectorData = msg
+        inspectorOutput.value = msg.data
+    }
+});
+
+// Init App
 const appInit = async () => {
+
+    // Default Values
+    secretInput.value = ""
+    inspectorData = null;
+    inspectorOutput.value = ""
+    secretMsg.textContent = "Please enter secret."
+    btnStartInspector.textContent = inspectorActive ? "Stop Inspector" : "Element Inspector";
+
+    // App Secret
     const storageSecret = await getAppSecret()
     if(storageSecret) {
         secretInput.value = "••••••••";
@@ -32,19 +58,6 @@ const appInit = async () => {
     }
 }
 
-// Listen to Inspector emits
-chrome.runtime.onMessage.addListener((msg) => {
-    if(!inspectorActive) return;
-    inspectorData = msg
-    inspectorOutput.value = msg.data
-});
-
-// Send Request
-btnDeleteOutput.addEventListener("click", async () => {
-    inspectorData = null;
-    inspectorOutput.value = ""
-});
-
 // Send Request
 btnRequest.addEventListener("click", async () => {
     btnRequest.disabled = true;
@@ -52,6 +65,12 @@ btnRequest.addEventListener("click", async () => {
     const response = await sendApiRequest(inspectorData)
     btnRequest.disabled = false;
     secretMsg.textContent = response;
+});
+
+// Remove Inspector Output
+btnRemoveOutput.addEventListener("click", async () => {
+    inspectorData = null;
+    inspectorOutput.value = ""
 });
 
 // Toggle inspector mode
@@ -97,5 +116,5 @@ btnDeleteSecret.addEventListener("click", async () => {
     btnSaveSecret.disabled = false;
 });
 
-// Init App
+// INIT APP
 appInit();
