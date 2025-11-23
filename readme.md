@@ -25,10 +25,24 @@ App Events Web Scraper is a Chrome extension designed to extract HTML content fr
 
 ### Usage
 
-1. Highlight content on a webpage  
-2. See the captured HTML in the side panel  
-3. Click **Send Element** to submit it to the API  
-4. Manage your secret with **Save / Show / Hide / Delete** buttons
+1. **Configure API Access**
+   - Enter your API **endpoint** and **secret** in the input fields.
+   - Manage your secret with the **Save / Show / Hide / Delete** buttons.
+
+2. **Activate the Inspector**
+   - Click **Start Inspector** to enable selection mode.
+
+3. **Capture Content**
+   - Highlight any text or HTML fragment on a webpage.
+   - The captured snippet appears instantly in the side panel.
+
+4. **Review Selection**
+   - Inspect the extracted HTML in the side panel preview.
+   - Adjust your selection if needed.
+
+5. **Send to API**
+   - Click **Send Element** to submit the selection.
+   - The request is sent with your stored endpoint and secret (see [API Data Flow](#api-data-flow-developer-notes)).
 
 ### Install
 
@@ -61,7 +75,7 @@ Download `repository` and store it within your prefered path:
 ### Folder Structure
 
 ```
-`repository`/
+root/
 ├── manifest.json          # Chrome extension manifest (v3)
 ├── readme.md              # Documentation
 ├── package.json           # Project metadata (still useful for dev/build)
@@ -73,22 +87,21 @@ Download `repository` and store it within your prefered path:
     ├── background.js      # Service worker for extension lifecycle
     ├── inspector.js       # Content script for HTML capture and serialization
     └── modules/
-        ├── env.js         # API configuration and axios client setup
-        └── request.js     # API request and secret management utilities
-
+        ├── env.js         # App configuration and axios client setup
+        └── request.js     # API request and configuration utilities
 ```
 
 ---
 
-### 🔌 API Data Flow (Developer Notes)
+### API Data Flow (Developer Notes)
 
-The extension communicates with the backend API using `axios` via the helper function `sendApiRequest(inspectorData)`.
+The extension communicates with the backend API using `axios` through the helper function `sendApiRequest(inspectorData)` defined in `request.js`.
 
 #### Request Overview
-- **Endpoint**: `API_ENDPOINT` (configured in `env.js`)
+- **Endpoint**: `<api_endpoint>` — retrieved from `chrome.storage.local`
 - **Method**: `POST`
 - **Headers**:
-  - `Authorization: <secret>` — retrieved from `chrome.storage.local` via `getAppSecret()`
+  - `Authorization: <secret>` — retrieved from `chrome.storage.local`
   - `Content-Type: application/json` (set automatically by axios)
 
 #### Request Body
