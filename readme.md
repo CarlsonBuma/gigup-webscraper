@@ -7,10 +7,10 @@ A Chrome browser extension for capturing and sending HTML elements from web page
 - Chrome 90+ (Manifest V3 requirement)
 - Chromium-based browsers (Edge, Brave, etc.)
 
-## Key Features
+### Key Features
 
 - **Text Selection Inspector** - Select text or HTML elements on any webpage
-- **API Integration** - Send captured HTML to a backend API endpoint with automatic serialization
+- **Dynamic API Integration** - Send captured HTML to a backend API endpoint, hosted by your service provider
 - **Secure Authentication** - Store and manage API secrets locally in browser storage
 - **Side Panel Interface** - Convenient side panel UI for all extension features
 - **Smart HTML Filtering** - Automatically removes scripts, styles, forms, and other non-content elements
@@ -21,7 +21,7 @@ A Chrome browser extension for capturing and sending HTML elements from web page
 
 ## 👤 For End Users
 
-App Events Web Scraper is a Chrome extension designed to extract HTML content from web pages and submit it to a backend API for processing. Users can select specific text or HTML sections on any webpage, and the extension will send the serialized data to the configured API endpoint with secure authentication.
+Gigup Web Scraper is a Chrome extension designed to extract HTML content from web pages and submit it to a backend API for processing. Users can select specific text or HTML sections on any webpage, and the extension will send the serialized data to the configured API endpoint with secure authentication.
 
 ### Usage
 
@@ -93,6 +93,7 @@ root/
 
 ---
 
+
 ### API Data Flow (Developer Notes)
 
 The extension communicates with the backend API using `axios` through the helper function `sendApiRequest(inspectorData)` defined in `request.js`.
@@ -114,7 +115,8 @@ The extension communicates with the backend API using `axios` through the helper
 
 ---
 
-## Legal & Compliance
+
+# Legal & Compliance
 
 - **Compliance**: Users are responsible for ensuring that any scraping activity complies with applicable laws, regulations, and the terms of service of the websites they interact with.
 - **Data Protection**: Captured content may include personal or sensitive information. Users must handle such data responsibly and in accordance with local data protection rules (e.g., GDPR).
