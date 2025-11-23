@@ -7,17 +7,15 @@ A Chrome browser extension for capturing and sending HTML elements from web page
 - Chrome 90+ (Manifest V3 requirement)
 - Chromium-based browsers (Edge, Brave, etc.)
 
-### Key Features
+## Key Features
 
-- **Text Selection Inspector** - Select text or HTML elements on any webpage
-- **Dynamic API Integration** - Send captured HTML to a backend API endpoint, hosted by your service provider
-- **Secure Authentication** - Store and manage API secrets locally in browser storage
-- **Side Panel Interface** - Convenient side panel UI for all extension features
-- **Smart HTML Filtering** - Automatically removes scripts, styles, forms, and other non-content elements
-- **Real-time Output** - View captured HTML before sending to API
+- **Scaled Data Extraction** – Capture structured content from websites repeatedly and reliably, enabling large‑scale scraping workflows  
+- **Provider‑Supplied API Connection** – Connect directly to your service provider’s API using the endpoint and secret they supply for further processing
+- **Structured Data Delivery** – Send clean, noise‑free HTML snippets that are ready for AI extraction, content analysis, or automated processing by the provider  
+- **Side Panel Workflow** – Manage configuration, preview captured snippets, and control requests through a simple side panel interface  
+- **Preview & Validation** – Review extracted content in real time before submission, ensuring accuracy and control for both user and provider  
 
 ---
-
 
 ## 👤 For End Users
 
@@ -63,7 +61,6 @@ Download `repository` and store it within your prefered path:
 
 ---
 
-
 ## 💻 For Developers
 
 ### Tech Stack
@@ -93,7 +90,6 @@ root/
 
 ---
 
-
 ### API Data Flow (Developer Notes)
 
 The extension communicates with the backend API using `axios` through the helper function `sendApiRequest(inspectorData)` defined in `request.js`.
@@ -114,7 +110,6 @@ The extension communicates with the backend API using `axios` through the helper
 ```
 
 ---
-
 
 # Legal & Compliance
 
