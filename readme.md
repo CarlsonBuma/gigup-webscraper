@@ -111,7 +111,7 @@ The extension communicates with the backend API using `axios` through the helper
 
 ---
 
-# Legal & Compliance
+## ⚖️ Legal & Compliance
 
 - **Compliance**: Users are responsible for ensuring that any scraping activity complies with applicable laws, regulations, and the terms of service of the websites they interact with.
 - **Data Protection**: Captured content may include personal or sensitive information. Users must handle such data responsibly and in accordance with local data protection rules (e.g., GDPR).
@@ -119,6 +119,6 @@ The extension communicates with the backend API using `axios` through the helper
 - **No Warranty**: The software is provided “as‑is” without guarantees of accuracy, reliability, or suitability for production environments. 
 - **Liability**: The authors and contributors are not liable for misuse of the extension, including violations of site policies or data protection laws.
 
-## License
+### License
 
 see licence.md
