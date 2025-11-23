@@ -2,12 +2,12 @@
 
 A Chrome browser extension for capturing and sending HTML elements from web pages to a backend API via authenticated requests.
 
-## Browser Compatibility
+**Browser Compatibility**
 
 - Chrome 90+ (Manifest V3 requirement)
 - Chromium-based browsers (Edge, Brave, etc.)
 
-## Key Features
+## ✨ Key Features
 
 - **Scaled Data Extraction** – Capture structured content from websites repeatedly and reliably, enabling large‑scale scraping workflows  
 - **Provider‑Supplied API Connection** – Connect directly to your service provider’s API using the endpoint and secret they supply for further processing
