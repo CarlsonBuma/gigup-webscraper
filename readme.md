@@ -101,7 +101,7 @@ The extension communicates with the backend API using `axios` through the helper
 - **Endpoint**: `<api_endpoint>` — retrieved from `chrome.storage.local`
 - **Method**: `POST`
 - **Headers**:
-  - `Authorization: <secret>` — retrieved from `chrome.storage.local`
+  - `Authorization: <api_secret>` — retrieved from `chrome.storage.local`
   - `Content-Type: application/json` (set automatically by axios)
 
 #### Request Body
