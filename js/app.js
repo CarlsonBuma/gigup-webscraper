@@ -8,12 +8,15 @@ const btnRequest = document.getElementById("button-request");
 const btnRemoveOutput = document.getElementById("button-delete-output");
 
 // App Secret
+const endpointInput = document.getElementById("endpoint");
 const secretInput = document.getElementById("secret");
 const btnSaveSecret = document.getElementById("save-secret");
 const btnShowSecret = document.getElementById("show-secret");
 const btnHideSecret = document.getElementById("hide-secret");
 const btnDeleteSecret = document.getElementById("delete-secret");
-const secretMsg = document.getElementById("secret-message");
+
+// Message
+const appMsg = document.getElementById("app-message");
 
 // Globals
 let inspectorActive = false;
@@ -28,7 +31,7 @@ chrome.runtime.onMessage.addListener((msg) => {
     // Init App
     // console.log('watcher', msg)
     if(msg?.type === "init") {
-        appInit()
+        initApp()
     }
 
     // Listen to inspector emits 
@@ -40,31 +43,40 @@ chrome.runtime.onMessage.addListener((msg) => {
 });
 
 // Init App
-const appInit = async () => {
+const initApp = async () => {
 
     // Default Values
+    btnSaveSecret.disabled = false;
+    btnRequest.disabled = true
     secretInput.value = ""
+    endpointInput.value = ""
     inspectorData = null;
     inspectorOutput.value = ""
-    secretMsg.textContent = "Please enter secret."
+    appMsg.textContent = "Configuration missing."
     btnStartInspector.textContent = inspectorActive ? "Stop Inspector" : "Element Inspector";
 
-    // App Secret
-    const storageSecret = await getAppSecret()
-    if(storageSecret) {
-        secretInput.value = "••••••••";
-        secretMsg.textContent = "Secret set.";
-        btnSaveSecret.disabled = true;
+    // Set App Configuration
+    const { endpoint, secret } = await getAppSecret();
+    if(secret) secretInput.value = secret;
+    if(endpoint) endpointInput.value = endpoint
+    if(secret && endpoint) {
+        appMsg.textContent = "Confguration completed.";
+        btnRequest.disabled = false;
+        return
     }
+
+    // Configuration Guide
+    if(!secret) appMsg.textContent = "Please enter secret.";
+    if(!endpoint) appMsg.textContent = "Please enter endpoint.";
 }
 
 // Send Request
 btnRequest.addEventListener("click", async () => {
     btnRequest.disabled = true;
-    secretMsg.textContent = "Loading.";
+    appMsg.textContent = "Loading.";
     const response = await sendApiRequest(inspectorData)
     btnRequest.disabled = false;
-    secretMsg.textContent = response;
+    appMsg.textContent = response;
 });
 
 // Remove Inspector Output
@@ -84,37 +96,30 @@ btnStartInspector.addEventListener("click", async () => {
 
 // Save secret
 btnSaveSecret.addEventListener("click", async () => {
-    const secret = secretInput.value;
-    if (secret) {
-        await saveAppSecret(secret)
-        secretInput.value = "••••••••"; // mask after save
-        secretMsg.textContent = "Secret stored.";
-        btnSaveSecret.disabled = true;
-    }
+    await saveAppSecret(endpointInput.value, secretInput.value)
+    initApp()
 });
 
 // Show secret
 btnShowSecret.addEventListener("click", async () => {
-    const secret = await getAppSecret()
+    const { endpoint, secret } = await getAppSecret()
     if (secret) {
-        secretMsg.textContent = secret;
+        appMsg.textContent = secret;
     } else {
-        secretMsg.textContent = "No secret available.";
+        appMsg.textContent = "No secret available.";
     }
 });
 
 // Hide secret
 btnHideSecret.addEventListener("click", () => {
-    secretMsg.textContent = "******"
+    appMsg.textContent = "******"
 });
 
 // Delete secret
 btnDeleteSecret.addEventListener("click", async () => {
     await deleteAppSecret()
-    secretInput.value = "";
-    secretMsg.textContent = "Secret removed.";
-    btnSaveSecret.disabled = false;
+    initApp()
 });
 
 // INIT APP
-appInit();
+initApp();

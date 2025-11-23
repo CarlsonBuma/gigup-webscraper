@@ -1,16 +1,13 @@
 "use strict"
 
-export const EXTENSION_STORAGE_LOCAL_KEY_NAME = "scraper_secret"
+export const STORAGE_KEY_API_ENDPOINT = "api_endpoint"
+export const STORAGE_KEY_API_SECRET = "api_secret"
 
-// Axios Request
-export const API_BASE_URL="http://localhost:8000/api"
-export const API_ENDPOINT="/app-scraper-request"
-export const apiClient = window.axios.create({
-    baseURL: API_BASE_URL,
+export const axiosRequest = window.axios.create({
     timeout: 10000, // optional: 10s timeout
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
     },
     withCredentials: true
-});
+})

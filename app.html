@@ -20,15 +20,19 @@
     
     <!-- User Secret -->
     <hr>
+    <label for="endpoint"><b>API Endpoint:</b></label>
+    <input id="endpoint" placeholder="Enter API-Endpoint" /><br>
+    
     <label for="secret"><b>API Secret:</b></label>
     <input type="password" id="secret" placeholder="Enter your secret" />
-    <button type="button" id="save-secret">Save Secret</button>
+    <button type="button" id="save-secret">Save Config</button>
     <button type="button" id="show-secret">Show Secret</button>
     <button type="button" id="hide-secret">Hide Secret</button>
     <button type="button" id="delete-secret">Delete Secret</button>
 
     <hr>
-    <div>Inspector: <span id="secret-message">Please enter secret.</span></div>
+    <label for="app-message"><b>Inspector:</b></label>
+    <div><span id="app-message">Please enter secret.</span></div>
 
     <!-- App -->
     <script type="module" src="js/app.js"></script>
