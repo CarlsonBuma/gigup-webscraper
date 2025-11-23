@@ -2,7 +2,7 @@
 
 A Chrome browser extension for capturing and sending HTML elements from web pages to a backend API via authenticated requests.
 
-**Browser Compatibility**
+### Browser Compatibility
 
 - Chrome 90+ (Manifest V3 requirement)
 - Chromium-based browsers (Edge, Brave, etc.)
